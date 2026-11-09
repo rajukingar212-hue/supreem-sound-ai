@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Supreem Sound AI Storage & Outputs (sensitive media)
+backend/storage/uploads/*
+!backend/storage/uploads/.gitkeep
+backend/storage/temp/*
+!backend/storage/temp/.gitkeep
+backend/storage/outputs/*
+!backend/storage/outputs/.gitkeep
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment & API Credentials (CRITICAL SECURITY)
+.env
+.env.local
+.env.production
+.env.development
+backend/.env
+frontend/.env.local
+frontend/.env.production
+*.pem
+*.key
+
+# Node / Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+.next/
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE & OS
+.vercel/
+frontend/.vercel/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+

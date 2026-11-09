@@ -1,0 +1,95 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: supreem_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: supreem_user
+      POSTGRES_PASSWORD: supreem_password
+      POSTGRES_DB: supreem_sound_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U supreem_user -d supreem_sound_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: supreem_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: supreem_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      - DATABASE_URL=postgresql://supreem_user:supreem_password@postgres:5432/supreem_sound_db
+      - REDIS_URL=redis://redis:6379/0
+      - USE_CELERY=true
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
+      - SECRET_KEY=${SECRET_KEY:-supreem-sound-secret-key-2026}
+      - ENVIRONMENT=production
+    ports:
+      - "8000:8000"
+    volumes:
+      - media_storage:/app/storage
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: supreem_worker
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_started
+      redis:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://supreem_user:supreem_password@postgres:5432/supreem_sound_db
+      - REDIS_URL=redis://redis:6379/0
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
+      - SECRET_KEY=${SECRET_KEY:-supreem-sound-secret-key-2026}
+      - ENVIRONMENT=production
+    command: ["celery", "-A", "app.core.celery_app", "worker", "-l", "info", "-c", "4"]
+    volumes:
+      - media_storage:/app/storage
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: supreem_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:
+  redis_data:
+  media_storage:
