@@ -2,7 +2,7 @@ import os
 import numpy as np
 import soundfile as sf
 from scipy.signal import spectrogram
-from typing import Dict, Any, Tuple
+from typing import Dict, Any, Tuple, Optional
 from app.models import AudioClassificationCategory
 
 class AudioClassifierService:

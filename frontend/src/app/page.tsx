@@ -23,13 +23,16 @@ import BatchUploader from "@/components/BatchUploader";
 export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [backendError, setBackendError] = useState<string | null>(null);
 
   const loadData = async () => {
     try {
       const data = await fetchStats();
       setStats(data);
-    } catch (e) {
+      setBackendError(null);
+    } catch (e: any) {
       console.error("Failed to load dashboard stats", e);
+      setBackendError(e.message || "Unable to reach backend API");
     } finally {
       setLoading(false);
     }
@@ -62,6 +65,21 @@ export default function DashboardPage() {
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
+
+      {backendError && (
+        <div className="p-3.5 bg-red-950/40 border border-red-800/80 rounded-xl text-xs text-red-300 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+            <span>Backend offline or unreachable: {backendError}</span>
+          </div>
+          <button
+            onClick={loadData}
+            className="px-2.5 py-1 bg-red-900/60 hover:bg-red-800 text-red-200 rounded-lg text-xs font-semibold"
+          >
+            Retry
+          </button>
+        </div>
+      )}
 
       {/* Metric Cards Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

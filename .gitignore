@@ -65,3 +65,6 @@ frontend/.vercel/
 Thumbs.db
 Desktop.ini
 
+
+.vercel
+.env*
