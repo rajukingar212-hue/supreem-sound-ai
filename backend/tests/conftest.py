@@ -1,4 +1,10 @@
 import os
+import tempfile
+
+# Ensure pytest runs against an isolated test database to protect production data
+_test_db_file = os.path.join(tempfile.gettempdir(), "test_supreem_sound_runner.db")
+os.environ["DATABASE_URL"] = f"sqlite:///{_test_db_file}"
+
 import shutil
 import pytest
 import numpy as np
@@ -15,7 +21,6 @@ from app.core.database import SessionLocal, Base, engine
 def init_test_db():
     Base.metadata.create_all(bind=engine)
     yield
-    # Keep db for inspection or clean up if desired
 
 @pytest.fixture(scope="session")
 def fixtures_dir(tmp_path_factory):
