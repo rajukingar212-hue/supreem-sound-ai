@@ -10,19 +10,26 @@ module.exports = {
     extend: {
       colors: {
         brand: {
-          bg: "#0B0F19",
+          blue: "#2563EB",
+          "blue-bright": "#3B82F6",
+          "blue-hover": "#60A5FA",
+          navy: "#0B1220",
+          midnight: "#080D18",
           card: "#111827",
-          border: "#1F2937",
-          accent: "#3B82F6",
-          purple: "#8B5CF6",
-          cyan: "#06B6D4",
-          success: "#10B981",
-          warning: "#F59E0B",
-          danger: "#EF4444"
-        }
-      }
+          "card-secondary": "#151F30",
+          border: "#263449",
+          "light-bg": "#F8FAFC",
+          "light-card": "#FFFFFF",
+          "light-secondary": "#F1F5F9",
+          "light-border": "#E2E8F0",
+        },
+      },
+      backgroundImage: {
+        "brand-gradient": "linear-gradient(135deg, #2563EB 0%, #3B82F6 50%, #60A5FA 100%)",
+        "hero-dark": "linear-gradient(135deg, #0B1220 0%, #14213D 55%, #1D4ED8 100%)",
+        "hero-light": "linear-gradient(135deg, #FFFFFF 0%, #EFF6FF 55%, #DBEAFE 100%)",
+      },
     },
   },
   plugins: [],
 };
-

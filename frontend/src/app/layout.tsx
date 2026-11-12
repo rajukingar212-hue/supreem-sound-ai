@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import AppShell from "@/components/AppShell";
 
 export const metadata: Metadata = {
   title: "Supreem Sound AI — Automated Video Sound Design Platform",
@@ -14,17 +14,33 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className="bg-[#0B0F19] text-gray-100 min-h-screen flex antialiased">
-        <Sidebar />
-        <div className="flex-1 flex flex-col min-w-0">
-          <Header />
-          <main className="flex-1 p-8 overflow-y-auto">
-            {children}
-          </main>
-        </div>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var saved = localStorage.getItem('supreem-theme') || 'system';
+                  var isDark = saved === 'dark' || (saved === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                  if (isDark) {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.style.colorScheme = 'dark';
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                    document.documentElement.style.colorScheme = 'light';
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body>
+        <ThemeProvider>
+          <AppShell>{children}</AppShell>
+        </ThemeProvider>
       </body>
     </html>
   );
 }
-

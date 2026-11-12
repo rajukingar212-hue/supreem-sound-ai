@@ -79,29 +79,29 @@ export default function StemPlayer({ jobId, stems, mixdownAvailable }: StemPlaye
   };
 
   return (
-    <div className="bg-[#111827] border border-gray-800 rounded-2xl p-6 shadow-xl space-y-6">
+    <div className="bg-white dark:bg-[#111827] border border-slate-200 dark:border-gray-800 rounded-2xl p-6 shadow-sm dark:shadow-xl space-y-6">
       {/* Header & Mode Switch */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h3 className="text-base font-semibold text-white flex items-center gap-2">
-            <Sliders className="w-4 h-4 text-violet-400" />
+          <h3 className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+            <Sliders className="w-4 h-4 text-violet-600 dark:text-violet-400" />
             Audio Engine Stems & Mixdown Monitor
           </h3>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-slate-500 dark:text-gray-400 mt-0.5">
             Conforms to 48,000 Hz, 24-bit PCM, Stereo, exactly 480,000 samples.
           </p>
         </div>
 
-        <div className="flex items-center bg-gray-900 border border-gray-800 rounded-lg p-1 text-xs">
+        <div className="flex items-center bg-slate-100 dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-xl p-1 text-xs shrink-0">
           <button
             onClick={() => {
               if (isPlaying) togglePlay();
               setActiveTab("mixdown");
             }}
-            className={`px-3 py-1.5 rounded-md font-medium transition-all ${
+            className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
               activeTab === "mixdown"
                 ? "bg-blue-600 text-white shadow-sm"
-                : "text-gray-400 hover:text-white"
+                : "text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
             Mixdown.wav
@@ -111,10 +111,10 @@ export default function StemPlayer({ jobId, stems, mixdownAvailable }: StemPlaye
               if (isPlaying) togglePlay();
               setActiveTab("stems");
             }}
-            className={`px-3 py-1.5 rounded-md font-medium transition-all ${
+            className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
               activeTab === "stems"
                 ? "bg-violet-600 text-white shadow-sm"
-                : "text-gray-400 hover:text-white"
+                : "text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
             Multi-Track Stems ({stems.length})
@@ -123,7 +123,7 @@ export default function StemPlayer({ jobId, stems, mixdownAvailable }: StemPlaye
       </div>
 
       {/* Main Transport Controls */}
-      <div className="flex items-center space-x-4 bg-gray-900/60 p-4 rounded-xl border border-gray-800/80">
+      <div className="flex items-center space-x-4 bg-slate-50 dark:bg-gray-900/60 p-4 rounded-xl border border-slate-200/90 dark:border-gray-800/80">
         <button
           onClick={togglePlay}
           className="w-12 h-12 rounded-xl bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/20 transition-all shrink-0"
@@ -133,7 +133,7 @@ export default function StemPlayer({ jobId, stems, mixdownAvailable }: StemPlaye
 
         <button
           onClick={() => handleSeek(0)}
-          className="p-2.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 transition-all shrink-0"
+          className="p-2.5 rounded-xl bg-slate-200/80 hover:bg-slate-300 dark:bg-gray-800 dark:hover:bg-gray-700 text-slate-700 dark:text-gray-300 transition-all shrink-0"
           title="Restart"
         >
           <RotateCcw className="w-4 h-4" />
@@ -141,9 +141,9 @@ export default function StemPlayer({ jobId, stems, mixdownAvailable }: StemPlaye
 
         {/* Timeline Slider */}
         <div className="flex-1 space-y-1">
-          <div className="flex items-center justify-between text-xs font-mono text-gray-400">
+          <div className="flex items-center justify-between text-xs font-mono text-slate-500 dark:text-gray-400">
             <span>{currentTime.toFixed(2)}s</span>
-            <span className="text-gray-500">
+            <span className="text-slate-400 dark:text-gray-500 text-[11px]">
               Sample: {Math.floor(currentTime * 48000).toLocaleString()} / 480,000
             </span>
             <span>10.00s</span>
@@ -155,13 +155,13 @@ export default function StemPlayer({ jobId, stems, mixdownAvailable }: StemPlaye
             step={0.01}
             value={currentTime}
             onChange={(e) => handleSeek(parseFloat(e.target.value))}
-            className="w-full accent-blue-500 h-1.5 bg-gray-700 rounded-lg cursor-pointer"
+            className="w-full accent-blue-600 dark:accent-blue-500 h-1.5 bg-slate-200 dark:bg-gray-700 rounded-lg cursor-pointer"
           />
         </div>
 
         {/* Master Volume */}
-        <div className="flex items-center space-x-2 shrink-0 pl-2 border-l border-gray-800">
-          <Volume2 className="w-4 h-4 text-gray-400" />
+        <div className="flex items-center space-x-2 shrink-0 pl-2 border-l border-slate-200 dark:border-gray-800">
+          <Volume2 className="w-4 h-4 text-slate-500 dark:text-gray-400" />
           <input
             type="range"
             min={0}
@@ -173,7 +173,7 @@ export default function StemPlayer({ jobId, stems, mixdownAvailable }: StemPlaye
               setMasterVolume(val);
               if (mixdownAudioRef.current) mixdownAudioRef.current.volume = val;
             }}
-            className="w-20 accent-blue-500 h-1.5 bg-gray-700 rounded-lg cursor-pointer"
+            className="w-20 accent-blue-600 dark:accent-blue-500 h-1.5 bg-slate-200 dark:bg-gray-700 rounded-lg cursor-pointer"
           />
         </div>
       </div>
@@ -200,29 +200,29 @@ export default function StemPlayer({ jobId, stems, mixdownAvailable }: StemPlaye
                 key={stem.id}
                 className={`p-3.5 rounded-xl border transition-all ${
                   isMuted
-                    ? "bg-gray-900/30 border-gray-800/40 opacity-50"
-                    : "bg-gray-900/70 border-gray-800 hover:border-gray-700"
+                    ? "bg-slate-50/50 dark:bg-gray-900/30 border-slate-200/50 dark:border-gray-800/40 opacity-50"
+                    : "bg-slate-50 dark:bg-gray-900/70 border-slate-200 dark:border-gray-800 hover:border-slate-300 dark:hover:border-gray-700"
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center space-x-2 truncate">
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-violet-500/20 text-violet-300 font-semibold uppercase">
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300 font-semibold uppercase">
                       {stem.stem_id}
                     </span>
-                    <span className="text-xs font-semibold text-gray-200 truncate">{stem.filename}</span>
-                    <span className="text-[11px] text-gray-500">({stem.category})</span>
+                    <span className="text-xs font-semibold text-slate-900 dark:text-gray-200 truncate">{stem.filename}</span>
+                    <span className="text-[11px] text-slate-500 dark:text-gray-500">({stem.category})</span>
                   </div>
 
                   <div className="flex items-center space-x-3 text-xs">
-                    <span className="text-gray-400 font-mono text-[11px]">
-                      Peak: <strong className="text-gray-200">{stem.true_peak_dbtp ?? -3.5} dBTP</strong>
+                    <span className="text-slate-500 dark:text-gray-400 font-mono text-[11px]">
+                      Peak: <strong className="text-slate-800 dark:text-gray-200">{stem.true_peak_dbtp != null ? `${stem.true_peak_dbtp.toFixed(2)} dBTP` : "N/A"}</strong>
                     </span>
                     <button
                       onClick={() => toggleStemMute(stem.id)}
-                      className={`px-2 py-1 rounded text-[11px] font-semibold transition-all ${
+                      className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all ${
                         isMuted
-                          ? "bg-red-500/20 text-red-400 border border-red-500/30"
-                          : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                          ? "bg-rose-50 text-rose-700 border border-rose-200 dark:bg-red-500/20 dark:text-red-400 dark:border-red-500/30"
+                          : "bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
                       }`}
                     >
                       {isMuted ? "MUTED" : "MUTE"}
@@ -249,12 +249,12 @@ export default function StemPlayer({ jobId, stems, mixdownAvailable }: StemPlaye
                     value={isMuted ? 0 : vol}
                     disabled={isMuted}
                     onChange={(e) => handleStemVolumeChange(stem.id, parseFloat(e.target.value))}
-                    className="w-32 accent-violet-500 h-1.5 bg-gray-700 rounded-lg cursor-pointer"
+                    className="w-32 accent-violet-600 dark:accent-violet-500 h-1.5 bg-slate-200 dark:bg-gray-700 rounded-lg cursor-pointer"
                   />
-                  <div className="flex-1 h-3 rounded bg-gray-800 overflow-hidden relative">
+                  <div className="flex-1 h-3 rounded-md bg-slate-200 dark:bg-gray-800 overflow-hidden relative">
                     {/* Simulated Waveform block representing 10s */}
                     <div
-                      className="absolute inset-y-0 left-0 bg-gradient-to-r from-violet-600/50 to-blue-500/50"
+                      className="absolute inset-y-0 left-0 bg-gradient-to-r from-violet-600 to-blue-500 opacity-60"
                       style={{ width: `${(currentTime / 10.0) * 100}%` }}
                     />
                   </div>
@@ -265,23 +265,23 @@ export default function StemPlayer({ jobId, stems, mixdownAvailable }: StemPlaye
         </div>
       ) : (
         /* Mixdown Overview View */
-        <div className="p-4 rounded-xl bg-gray-900/60 border border-gray-800 space-y-4">
+        <div className="p-4 rounded-xl bg-slate-50 dark:bg-gray-900/60 border border-slate-200 dark:border-gray-800 space-y-4">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-            <div className="p-3 rounded-lg bg-gray-800/40 border border-gray-700/40">
-              <span className="text-gray-400 block mb-1">Standard</span>
-              <span className="font-semibold text-emerald-400">48,000 Hz / 24-bit</span>
+            <div className="p-3 rounded-xl bg-white dark:bg-gray-800/40 border border-slate-200 dark:border-gray-700/40 shadow-sm">
+              <span className="text-slate-500 dark:text-gray-400 block mb-1">Standard</span>
+              <span className="font-semibold text-emerald-600 dark:text-emerald-400">48,000 Hz / 24-bit</span>
             </div>
-            <div className="p-3 rounded-lg bg-gray-800/40 border border-gray-700/40">
-              <span className="text-gray-400 block mb-1">Sample Count</span>
-              <span className="font-semibold text-gray-200">480,000 Stereo</span>
+            <div className="p-3 rounded-xl bg-white dark:bg-gray-800/40 border border-slate-200 dark:border-gray-700/40 shadow-sm">
+              <span className="text-slate-500 dark:text-gray-400 block mb-1">Sample Count</span>
+              <span className="font-semibold text-slate-800 dark:text-gray-200">480,000 Stereo</span>
             </div>
-            <div className="p-3 rounded-lg bg-gray-800/40 border border-gray-700/40">
-              <span className="text-gray-400 block mb-1">Target True Peak</span>
-              <span className="font-semibold text-blue-400">-3.5 dBTP (Ceiling -1)</span>
+            <div className="p-3 rounded-xl bg-white dark:bg-gray-800/40 border border-slate-200 dark:border-gray-700/40 shadow-sm">
+              <span className="text-slate-500 dark:text-gray-400 block mb-1">Target True Peak</span>
+              <span className="font-semibold text-blue-600 dark:text-blue-400">-3.5 dBTP (Ceiling -1)</span>
             </div>
-            <div className="p-3 rounded-lg bg-gray-800/40 border border-gray-700/40">
-              <span className="text-gray-400 block mb-1">Summation Contract</span>
-              <span className="font-semibold text-purple-400">Σ Stems = Mixdown</span>
+            <div className="p-3 rounded-xl bg-white dark:bg-gray-800/40 border border-slate-200 dark:border-gray-700/40 shadow-sm">
+              <span className="text-slate-500 dark:text-gray-400 block mb-1">Summation Contract</span>
+              <span className="font-semibold text-purple-600 dark:text-purple-400">Σ Stems = Mixdown</span>
             </div>
           </div>
         </div>
